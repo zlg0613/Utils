@@ -253,6 +253,10 @@ public class FileUtils {
 		return saveFileWithBuffer(content.getBytes(),bufferSize,name,false);
 	}
 	
+	public static boolean saveFileWithBuffer(String content,int bufferSize,String name,boolean append){
+		return saveFileWithBuffer(content.getBytes(),bufferSize,name,append);
+	}
+	
 	/**
 	 * 
 	 * 本方法的主要目的是简化文件的操作，使用 ReadFileCallBack在读取文本文件的每一行时进行操作<br/>
