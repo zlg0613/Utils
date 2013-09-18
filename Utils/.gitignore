@@ -1,0 +1,10 @@
+.classpath
+.project
+.project_bak
+.settings/*
+bin/.gitignore
+.directory
+target/
+*.class
+*.xls
+/target

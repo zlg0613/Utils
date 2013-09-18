@@ -18,7 +18,18 @@ import java.util.List;
 
 public class FileUtils {
 
-	
+	public static boolean copy(String org,String out,boolean force) {
+		File or = new File(org);
+		File ou = new File(out);
+		if(!or.exists()){
+			throw new RuntimeException(new FileNotFoundException("找不到源文件:"+org));
+		}
+		if(ou.exists()&&(!force||!ou.canWrite())){
+			throw new IllegalArgumentException("目标文件已经存在");
+		}
+		byte[]
+		return false;
+	}
 	/**
 	 * 
 	 * @see getFileNamePrefix(String fname)
