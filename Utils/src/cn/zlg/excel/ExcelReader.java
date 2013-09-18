@@ -17,6 +17,30 @@ public class ExcelReader {
 	public static void readXLS(String file,ExcelReadCallback callback){
 		readXLS(file,new int[]{0},callback);
 	}
+	public static void readXLS(String file,int minSheetIndex,int maxSheetIndex,ExcelReadCallback callback){
+		int i= 0;
+		try{
+			POIFSFileSystem fs=new POIFSFileSystem(new FileInputStream(file));   
+			HSSFWorkbook wb = new HSSFWorkbook(fs);   
+			if(maxSheetIndex>=0&&maxSheetIndex<minSheetIndex){
+				throw new IllegalArgumentException("maxSheetIndex<minSheetIndex");
+			}
+			if(maxSheetIndex<0||maxSheetIndex>wb.getNumberOfSheets()){
+				maxSheetIndex = wb.getNumberOfSheets();
+			}
+			int sheetNum;
+			
+			for(sheetNum=minSheetIndex;sheetNum<maxSheetIndex;sheetNum++){
+				HSSFSheet sheet = wb.getSheetAt(sheetNum);  
+				for(i=0;i<sheet.getPhysicalNumberOfRows();i++){
+					HSSFRow row = sheet.getRow(i);   
+					callback.readRow(sheetNum,i, row);
+				}
+			}
+		} catch (Exception e) {   
+			e.printStackTrace();   
+		}   
+	}
 	public static void readXLS(String file,int[] sheets,ExcelReadCallback callback){
 		int i= 0;
 		try{
