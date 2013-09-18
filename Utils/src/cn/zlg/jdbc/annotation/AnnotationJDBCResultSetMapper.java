@@ -51,10 +51,11 @@ public class AnnotationJDBCResultSetMapper<T> {
 		}
 	}
 	
-	
-	List<T> queryForList(T t){
+	List<T> queryForList(T t,String sql){
 		final List<T> list = New.arraylist();
-		String sql = resolveSql();
+		if(StringUtils.nullOrEmpty(sql)){
+			sql = resolveSql();
+		}
 		QueryUtils.query(sql, new DoWhileLoadCallBack() {
 			
 			@Override
@@ -95,6 +96,11 @@ public class AnnotationJDBCResultSetMapper<T> {
 		return list;
 	}
 	
+	List<T> queryForList(T t){
+		List<T> list = queryForList(t,null);
+		return list;
+	}
+	
 	/**
 	 * 映射的类型必须是基本类型或其包装类型或者String类型
 	 * @param t
@@ -111,6 +117,10 @@ public class AnnotationJDBCResultSetMapper<T> {
 		return queryForList(t);
 	}
 	
+	public List<T> queryUsingSql(T t,String sql){
+		parseFieldMap(t);
+		return queryForList(t,sql);
+	}
 	private String resolveSql(){
 		StringBuilder sb = new StringBuilder("select ");
 		Iterator<String> it = map.keySet().iterator();

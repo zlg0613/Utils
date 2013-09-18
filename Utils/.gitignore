@@ -1,9 +1,0 @@
-.classpath
-.project
-.settings/*
-.gitignore
-bin/.gitignore
-.directory
-target/*
-*.class
-*.xls
