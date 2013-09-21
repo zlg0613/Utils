@@ -41,7 +41,10 @@ public class AnnotationJDBCResultSetMapper<T> {
 		}
 		return result;
 	}
-	
+	public Map queryForMap(T t,String tableName){
+		this.tableName = tableName;
+		return queryForMap(t);
+	}
 	void parseFieldMap(T t){
 		c = t.getClass();
 		map = getColumnFieldMap();
