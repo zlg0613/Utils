@@ -22,6 +22,12 @@ public class ExcelRow {
 	public ExcelCell[] getCells() {
 		return cells;
 	}
+	public ExcelCell getCell(int col) {
+		if(col>0&&col<cells.length){
+			return cells[col];
+		}
+		return null;
+	}
 	public void setCells(ExcelCell[] cells) {
 		this.cells = cells;
 	}

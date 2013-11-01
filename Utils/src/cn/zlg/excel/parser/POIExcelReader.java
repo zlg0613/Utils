@@ -37,7 +37,7 @@ public class POIExcelReader implements ExcelReader {
 //			System.out.println("readRows:"+ec);
 			List<ExcelRow> list = new ArrayList<ExcelRow>();
 			for(i=ec.getStartRow();i<ec.getEndRow();i++){
-				HSSFRow row = sheet.getRow(i);   
+				HSSFRow row = sheet.getRow(i);  
 				if(row==null){
 					continue;
 				}

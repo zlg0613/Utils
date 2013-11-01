@@ -6,6 +6,7 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import org.springframework.jca.cci.connection.NotSupportedRecordFactory;
 
 public class ExcelReader {
 
@@ -58,7 +59,12 @@ public class ExcelReader {
 		}   
 		
 	}
+	/**
+	 * 还未实现
+	 * @param file
+	 * @param callback
+	 */
 	public static void readXLSX(String file,ExcelReadCallback callback){
-		
+		throw new UnsupportedOperationException();
 	}
 }
