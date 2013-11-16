@@ -26,6 +26,28 @@ public class StringUtils {
 		}
 		return false;
 	}
+	
+	public static boolean notEmptyString(String s){
+		if(s==null || s.trim().equals("")){
+			return false;
+		}
+		return true;
+	}
+	
+	public static String firstCharUppercase(String s){
+		if(s==null || s.equals("")){
+			return s;
+		}
+		char c = s.charAt(0);
+		if(c>='a' && c<='z'){
+			c = (char) (c - 32);
+			char[] array = s.toCharArray();
+			array[0] = c;
+			return new String(array);
+		}
+		return s;
+	}
+	
 	public static String trim(String src,String toTrim){
 		while(src.startsWith(toTrim)){
 			src = src.substring(toTrim.length());
