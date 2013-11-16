@@ -30,6 +30,11 @@ public class FileUtils {
 //		byte[]
 		return false;
 	}
+	
+	public static boolean append(String file,String content){
+		return saveFileWithBuffer(content,1024*2,file);
+	}
+	
 	/**
 	 * 
 	 * @see getFileNamePrefix(String fname)
