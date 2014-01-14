@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 
 public class FileUtils {
@@ -98,6 +99,10 @@ public class FileUtils {
 	
 	public static List<File> listFiles(String dirName,FilenameFilter ff){
 		File dir = new File(dirName);
+		return listFiles(dir,ff);
+	}
+	
+	public static List<File> listFiles(File dir,FilenameFilter ff){
 		if(!dir.isDirectory()){
 			throw new IllegalArgumentException(dir + "不是有效的目录");
 		}
@@ -107,13 +112,45 @@ public class FileUtils {
 			if(f.isDirectory()){
 				files.addAll(listFiles(f.getAbsolutePath(),ff));
 			}else{
-					String fileName = f.getName();
-					if(ff.accept(dir, fileName)){
-						files.add(f);
-					}
+				String fileName = f.getName();
+				if(ff.accept(dir, fileName)){
+					files.add(f);
 				}
 			}
+		}
 		return files;
+	}
+	
+	public static List<File> listFiles(String dir,final Pattern p){
+		return listFiles(new File(dir),p);
+	}
+	public static List<File> listFiles(File dir,final Pattern p){
+		FilenameFilter ff = new FilenameFilter(){
+
+			@Override
+			public boolean accept(File dir, String name) {
+				return p.matcher(name).matches();
+			}
+			
+		};
+		return listFiles(dir,ff);
+	}
+	/**
+	 * 
+	 * @param dir
+	 * @param fileNameRegex
+	 * @return
+	 */
+	public static List<File> listFiles(File dir,final String fileNameRegex){
+		FilenameFilter ff = new FilenameFilter(){
+			
+			@Override
+			public boolean accept(File dir, String name) {
+				return name.matches(fileNameRegex);
+			}
+			
+		};
+		return listFiles(dir,ff);
 	}
 	
 	
@@ -299,6 +336,33 @@ public class FileUtils {
 			String s ;
 			while((s=br.readLine())!=null){
 				cb.doWhileRead(s,rowNum);
+				rowNum++;
+			}
+			br.close();
+		} catch (Exception e) {
+			throw new ReadFileCallBackException("读取文件出错",e);
+		}
+	}
+	
+	public static void readFile(String fileName,ReadFileCallBackWithReturnValue cb) throws ReadFileCallBackException{
+		readFile(new File(fileName),cb);
+	}
+	
+	/**
+	 * 本方法的主要目的是简化文件的操作，使用 ReadFileCallBack在读取文本文件的每一行时进行操作
+	 * 本方法只适用于文本文件，在行上进行操作，不适合于字节流文件
+	 * @param file 需要读取的文件
+	 * @param cb 对文件的行进行操作的接口实现
+	 * @throws ReadFileCallBackException
+	 */
+	public static void readFile(File file,ReadFileCallBackWithReturnValue cb) throws ReadFileCallBackException{
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(file));
+			int rowNum=0;
+			String s ;
+			boolean continue_ = true;
+			while(continue_&&(s=br.readLine())!=null){
+				continue_ = cb.doWhileRead(s,rowNum);
 				rowNum++;
 			}
 			br.close();

@@ -57,8 +57,8 @@ public class AnnotationExcelGenerator implements ExcelGenerator {
 		HSSFRow row = createRow(sheet,currentRow);
 		for(Integer col:columFieldMap.keySet()){
 			try {
-				row.getCell(col).setCellValue(columFieldMap.get(col).field.get(obj).toString());
-				
+				Object o = columFieldMap.get(col).field.get(obj);
+				row.getCell(col).setCellValue(o==null?"":o.toString());
 			} catch (IllegalArgumentException e) {
 				e.printStackTrace();
 			} catch (IllegalAccessException e) {

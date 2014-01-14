@@ -11,9 +11,8 @@ import cn.zlg.util.jdbc.base.ConnectionFactory;
 
 public class QueryUtils {
 
-	public static int getMaxIdFrom(String key,String table){
+	public static int getMaxIdFrom(Connection con,String key,String table){
 		String sql = "select max("+key+") from "+table;
-		Connection con = ConnectionFactory.getConnection();
 		try {
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery(sql);
@@ -27,6 +26,9 @@ public class QueryUtils {
 			e.printStackTrace();
 		}
 		return Integer.MIN_VALUE;
+	}
+	public static int getMaxIdFrom(String key,String table){
+		return getMaxIdFrom(ConnectionFactory.getConnection(),key,table);
 	}
 	
 	public static void executeAnySQL(String sql){
@@ -43,6 +45,9 @@ public class QueryUtils {
 	
 	public static <T> List<T> query(String sql,RowMapper<T> mapper){
 		Connection con = ConnectionFactory.getConnection();
+		return query(con,sql,mapper);
+	}
+	public static <T> List<T> query(Connection con,String sql,RowMapper<T> mapper){
 		try {
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery(sql);
@@ -113,6 +118,9 @@ public class QueryUtils {
 	
 	public static void query(String sql,DoWhileLoadCallBack cb){
 		Connection con = ConnectionFactory.getConnection();
+		 query(con,sql,cb);
+	}
+	public static void query(Connection con,String sql,DoWhileLoadCallBack cb){
 		try {
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery(sql);

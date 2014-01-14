@@ -14,6 +14,14 @@ public class StringUtils {
 	public static long MS_IN_MINUTE = 60*1000;
 	public static long MS_IN_SECOND = 1000;
 	
+	public static String firstCharToUpperCase(String w){
+		if(w.charAt(0)>='a'&&w.charAt(0)<='z'){
+			String nw = (char)(w.charAt(0)-32)+w.substring(1);
+			return nw;
+		}
+		return w;
+	}
+	
 	public static void assertNotNullOrEmpty(String value,String msg){
 		if(value==null||value.trim().equals("")){
 			throw new RuntimeException(msg);
@@ -26,6 +34,28 @@ public class StringUtils {
 		}
 		return false;
 	}
+	
+	public static boolean notEmptyString(String s){
+		if(s==null || s.trim().equals("")){
+			return false;
+		}
+		return true;
+	}
+	
+	public static String firstCharUppercase(String s){
+		if(s==null || s.equals("")){
+			return s;
+		}
+		char c = s.charAt(0);
+		if(c>='a' && c<='z'){
+			c = (char) (c - 32);
+			char[] array = s.toCharArray();
+			array[0] = c;
+			return new String(array);
+		}
+		return s;
+	}
+	
 	public static String trim(String src,String toTrim){
 		while(src.startsWith(toTrim)){
 			src = src.substring(toTrim.length());
