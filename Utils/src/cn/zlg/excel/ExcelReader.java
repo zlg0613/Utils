@@ -32,7 +32,8 @@ public class ExcelReader {
 			
 			for(sheetNum=minSheetIndex;sheetNum<maxSheetIndex;sheetNum++){
 				HSSFSheet sheet = wb.getSheetAt(sheetNum);  
-				for(i=0;i<sheet.getPhysicalNumberOfRows();i++){
+				for(i=0;i<=sheet.getLastRowNum();i++){
+//					for(i=0;i<sheet.getPhysicalNumberOfRows();i++){
 					HSSFRow row = sheet.getRow(i);   
 					callback.readRow(sheetNum,i, row);
 				}
@@ -48,7 +49,8 @@ public class ExcelReader {
 			HSSFWorkbook wb = new HSSFWorkbook(fs);   
 			for(int sheetNum:sheets){
 				HSSFSheet sheet = wb.getSheetAt(sheetNum);  
-				for(i=0;i<sheet.getPhysicalNumberOfRows();i++){
+				for(i=0;i<=sheet.getLastRowNum();i++){
+//					for(i=0;i<sheet.getPhysicalNumberOfRows();i++){
 					HSSFRow row = sheet.getRow(i);   
 					callback.readRow(sheetNum,i, row);
 				}

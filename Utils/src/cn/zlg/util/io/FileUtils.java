@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 
 public class FileUtils {
@@ -98,6 +99,10 @@ public class FileUtils {
 	
 	public static List<File> listFiles(String dirName,FilenameFilter ff){
 		File dir = new File(dirName);
+		return listFiles(dir,ff);
+	}
+	
+	public static List<File> listFiles(File dir,FilenameFilter ff){
 		if(!dir.isDirectory()){
 			throw new IllegalArgumentException(dir + "不是有效的目录");
 		}
@@ -107,13 +112,45 @@ public class FileUtils {
 			if(f.isDirectory()){
 				files.addAll(listFiles(f.getAbsolutePath(),ff));
 			}else{
-					String fileName = f.getName();
-					if(ff.accept(dir, fileName)){
-						files.add(f);
-					}
+				String fileName = f.getName();
+				if(ff.accept(dir, fileName)){
+					files.add(f);
 				}
 			}
+		}
 		return files;
+	}
+	
+	public static List<File> listFiles(String dir,final Pattern p){
+		return listFiles(new File(dir),p);
+	}
+	public static List<File> listFiles(File dir,final Pattern p){
+		FilenameFilter ff = new FilenameFilter(){
+
+			@Override
+			public boolean accept(File dir, String name) {
+				return p.matcher(name).matches();
+			}
+			
+		};
+		return listFiles(dir,ff);
+	}
+	/**
+	 * 
+	 * @param dir
+	 * @param fileNameRegex
+	 * @return
+	 */
+	public static List<File> listFiles(File dir,final String fileNameRegex){
+		FilenameFilter ff = new FilenameFilter(){
+			
+			@Override
+			public boolean accept(File dir, String name) {
+				return name.matches(fileNameRegex);
+			}
+			
+		};
+		return listFiles(dir,ff);
 	}
 	
 	

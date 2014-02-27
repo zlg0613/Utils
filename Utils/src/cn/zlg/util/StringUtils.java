@@ -14,6 +14,14 @@ public class StringUtils {
 	public static long MS_IN_MINUTE = 60*1000;
 	public static long MS_IN_SECOND = 1000;
 	
+	public static String firstCharToUpperCase(String w){
+		if(w.charAt(0)>='a'&&w.charAt(0)<='z'){
+			String nw = (char)(w.charAt(0)-32)+w.substring(1);
+			return nw;
+		}
+		return w;
+	}
+	
 	public static void assertNotNullOrEmpty(String value,String msg){
 		if(value==null||value.trim().equals("")){
 			throw new RuntimeException(msg);

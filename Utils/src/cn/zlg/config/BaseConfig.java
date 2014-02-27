@@ -1,10 +1,14 @@
 package cn.zlg.config;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Map.Entry;
+import java.util.Properties;
 
 import cn.zlg.util.New;
 
@@ -13,8 +17,7 @@ public class BaseConfig {
 	
 	
 	public BaseConfig(){}
-	
-	public BaseConfig(Properties p){
+	public void init(Properties p){
 		try {
 			Iterator<Entry<Object,Object>> it = p.entrySet().iterator();
 			while(it.hasNext()){
@@ -25,9 +28,28 @@ public class BaseConfig {
 			e.printStackTrace();
 		}
 	}
+	public void init(String propties){
+		Properties p = new Properties();
+			try {
+				if(propties.contains(File.separator)||propties.contains("/")){
+				 p.load(new FileInputStream(propties));
+				}else{
+					p.load(BaseConfig.class.getClassLoader().getResourceAsStream(propties));
+				}
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		init(p);
+	}
+	
+	public BaseConfig(Properties p){
+		init(p);
+	}
 	
 	public BaseConfig(String propertiesFile){
-		this(BaseConfig.class.getClassLoader().getResourceAsStream(propertiesFile));
+		init(propertiesFile);
 	}
 	
 	public BaseConfig(InputStream is){
