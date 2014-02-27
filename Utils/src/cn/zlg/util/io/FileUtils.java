@@ -344,6 +344,33 @@ public class FileUtils {
 		}
 	}
 	
+	public static void readFile(String fileName,ReadFileCallBackWithReturnValue cb) throws ReadFileCallBackException{
+		readFile(new File(fileName),cb);
+	}
+	
+	/**
+	 * 本方法的主要目的是简化文件的操作，使用 ReadFileCallBack在读取文本文件的每一行时进行操作
+	 * 本方法只适用于文本文件，在行上进行操作，不适合于字节流文件
+	 * @param file 需要读取的文件
+	 * @param cb 对文件的行进行操作的接口实现
+	 * @throws ReadFileCallBackException
+	 */
+	public static void readFile(File file,ReadFileCallBackWithReturnValue cb) throws ReadFileCallBackException{
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(file));
+			int rowNum=0;
+			String s ;
+			boolean continue_ = true;
+			while(continue_&&(s=br.readLine())!=null){
+				continue_ = cb.doWhileRead(s,rowNum);
+				rowNum++;
+			}
+			br.close();
+		} catch (Exception e) {
+			throw new ReadFileCallBackException("读取文件出错",e);
+		}
+	}
+	
 	/**
 	 * 
 	 * @param file 要读取的文件

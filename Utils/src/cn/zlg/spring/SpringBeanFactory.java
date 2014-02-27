@@ -4,8 +4,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class SpringBeanFactory {
-
-	private static ApplicationContext context;
+	
+	private static final ApplicationContext context;
 	
 	static{
 		context = new ClassPathXmlApplicationContext("applicationContext.xml");
@@ -17,5 +17,9 @@ public class SpringBeanFactory {
 	
 	public static Object getBean(String name){
 		return context.getBean(name);
+	}
+	
+	public static ApplicationContext getContext(){
+		return context;
 	}
 }
